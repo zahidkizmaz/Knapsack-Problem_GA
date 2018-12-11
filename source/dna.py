@@ -21,5 +21,8 @@ class Dna:
             return 0
         else:
             return self.values
+    
+    def __str__(self):
+        return self.bits
         
     

@@ -24,6 +24,13 @@ class Population:
                 bits[i] = '1'
             self.increase_counter()
         return bits
+
+    def __str__(self):
+        res = ''
+        for p in self.pop:
+            res += p + '\n'
+            print(p)
+        return res
     
 
 
