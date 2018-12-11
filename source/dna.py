@@ -11,8 +11,8 @@ class Dna:
         total_weights = 0
         for i, bit in enumerate(self.bits):
             if bit:
-                total_val += self.values.get(i)
-                total_weights += self.weights.get(i)
+                total_val += self.values[i]
+                total_weights += self.weights[i]
 
         return total_val, total_weights
 

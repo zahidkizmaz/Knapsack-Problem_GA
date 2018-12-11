@@ -42,5 +42,5 @@ def get_inputs(inpts):
 if __name__ == "__main__": 
     inpt_array = get_inputs(sys.argv)
     paramaters = handle_inputs(inpt_array)
-    print(paramaters)
+    #print(paramaters)
 
