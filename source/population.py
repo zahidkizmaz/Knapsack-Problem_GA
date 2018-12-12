@@ -10,7 +10,7 @@ class Population:
 
     def increase_counter(self):
         self.random_counter += 1
-        if self.random_counter == len(self.params.get('item_weights')):
+        if self.random_counter == len(self.params.get('random_number_array')):
             self.random_counter = 0
 
     def initialize_population(self):
@@ -21,15 +21,17 @@ class Population:
         bits = len(self.params.get('item_weights')) * '0'
         for i, b in enumerate(bits):
             if self.params.get('random_number_array')[self.random_counter] >= 0.5:
-                bits[i] = '1'
+                bits_list = list(bits)
+                bits_list[i] = '1'
+                bits = "".join(bits_list)
             self.increase_counter()
         return bits
 
     def __str__(self):
         res = ''
         for p in self.pop:
-            res += p + '\n'
-            print(p)
+            res += str(p) + '\n'
+            #print(p)
         return res
     
 
