@@ -1,6 +1,5 @@
 from bag import Bag
 from dna import Dna
-import numpy as np
 
 class Population:
 
@@ -27,6 +26,18 @@ class Population:
                 bits = "".join(bits_list)
         return bits
     
+    def mutate_pop(self, mutation_rate = None):
+        mutation_rate = mutation_rate if mutation_rate is not None else self.params.get('mutation_rate')
+        for p in self.pop:
+            for i, b in enumerate(p.bits):
+                if self.get_next_random() <= mutation_rate:
+                    bits_list = list(p.bits)
+                    if bits_list[i] =='0':
+                        bits_list[i] = '1'
+                    else:
+                        bits_list[i] = '0'
+                    self.pop[i].bits = "".join(bits_list)
+
     def get_next_random(self):
         randm = self.params.get('random_number_array')[self.random_counter]
         self.increase_counter()
@@ -40,10 +51,16 @@ class Population:
     def get_index_by_random(self, array_len):
         return array_len * self.get_next_random() - 1
 
+    def select_parents(self, tournament_size):
+        pool = []
+        for _ in range(tournament_size):
+            pool.append(self.pop[self.get_index_by_random(self.params.get('pop_size'))])
+        return pool
+
     def __str__(self):
         res = ''
         for i, p in enumerate(self.pop):
-            res += str(i) + '- ' + str(p) + '\n'
+            res += str(i+1) + '- ' + str(p) + '\n'
             #print(p)
         return res
 
