@@ -23,7 +23,7 @@ class Dna:
             return 0
         else:
             return self.total_value
-    
+
     def __str__(self):
         return self.bits
         

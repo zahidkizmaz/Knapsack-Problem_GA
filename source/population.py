@@ -28,7 +28,7 @@ class Population:
                 bits_list[i] = '1'
                 bits = "".join(bits_list)
         return bits
-    
+    '''
     def mutate_pop(self, mutation_rate = None):
         mutation_rate = mutation_rate if mutation_rate is not None else self.params.get('mutation_rate')
         for p in self.pop:
@@ -40,6 +40,19 @@ class Population:
                     else:
                         bits_list[i] = '0'
                     self.pop[i].bits = "".join(bits_list)
+    '''
+    
+    def mutate_individual(self, individual):
+        mutation_rate = self.params.get('mutation_rate')
+        for i, b in enumerate(individual.bits):
+            if self.get_next_random() <= mutation_rate:
+                bits_list = list(individual.bits)
+                if bits_list[i] =='0':
+                    bits_list[i] = '1'
+                else:
+                    bits_list[i] = '0'
+                new_bits = "".join(bits_list)
+        individual.bits = new_bits
 
     def get_next_random(self):
         randm = self.params.get('random_number_array')[self.random_counter]
@@ -47,8 +60,10 @@ class Population:
         return randm
 
     def crossover(self, parent1, parent2, crossover_point):
-        child1 = parent1[:crossover_point] + parent2[crossover_point:]
-        child2 = parent2[:crossover_point] + parent1[crossover_point:]
+        child1_bits = parent1.bits[:crossover_point] + parent2.bits[crossover_point:]
+        child2_bits = parent2.bits[:crossover_point] + parent1.bits[crossover_point:]
+        child1 = Dna(child1_bits, self.params.get('item_weights'), self.params.get('item_values'), Bag(self.params.get('bag_size')))
+        child2 = Dna(child2_bits, self.params.get('item_weights'), self.params.get('item_values'), Bag(self.params.get('bag_size')))
         return child1, child2
 
     def get_index_by_random(self, array_len):
@@ -62,8 +77,12 @@ class Population:
 
     def select_parents(self, tournament_size):
         pool = self.create_pool(tournament_size)
-        pool.sort(key = lambda x: x.fitness)
+        pool.sort(key = lambda x: x.fitness(), reverse=True)
         return pool[0], pool[1]
+
+    def survivor_select(self, mating_pool):
+        sorted_pool = sorted(mating_pool,key = lambda x: x.fitness(), reverse=True)
+        return sorted_pool[:self.params.get('pop_size')]
 
     def __str__(self):
         res = ''
