@@ -1,5 +1,6 @@
 from bag import Bag
 from dna import Dna
+from math import ceil
 
 class Population:
 
@@ -15,7 +16,9 @@ class Population:
 
     def initialize_population(self):
         for i in range(self.params.get('pop_size')):
-            self.pop.append(Dna(self.initialize_bits(), self.params.get('item_weights'), self.params.get('item_values'), Bag(self.params.get('bag_size'))))
+            tmp_dna = Dna(self.initialize_bits(), self.params.get('item_weights'), self.params.get('item_values'), Bag(self.params.get('bag_size')))
+            tmp_dna.eval_vals()
+            self.pop.append(tmp_dna)
 
     def initialize_bits(self):
         bits = len(self.params.get('item_weights')) * '0'
@@ -49,18 +52,23 @@ class Population:
         return child1, child2
 
     def get_index_by_random(self, array_len):
-        return array_len * self.get_next_random() - 1
+        return ceil(array_len * self.get_next_random()) - 1
 
-    def select_parents(self, tournament_size):
+    def create_pool(self, tournament_size):
         pool = []
         for _ in range(tournament_size):
             pool.append(self.pop[self.get_index_by_random(self.params.get('pop_size'))])
         return pool
 
+    def select_parents(self, tournament_size):
+        pool = self.create_pool(tournament_size)
+        pool.sort(key = lambda x: x.fitness)
+        return pool[0], pool[1]
+
     def __str__(self):
         res = ''
         for i, p in enumerate(self.pop):
-            res += str(i+1) + '- ' + str(p) + '\n'
+            res += str(i+1) + '- ' + str(p) +  '\tFitness:' + str(p.fitness()) + '\n'
             #print(p)
         return res
 

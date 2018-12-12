@@ -8,4 +8,5 @@ if __name__ == "__main__":
     print(params)
     pop = Population(params)
     pop.initialize_population()
+    
     print(pop)

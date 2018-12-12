@@ -10,17 +10,19 @@ class Dna:
         total_val = 0
         total_weights = 0
         for i, bit in enumerate(self.bits):
-            if bit:
+            if bit == '1':
                 total_val += self.values[i]
                 total_weights += self.weights[i]
-
+        self.total_weight = total_weights
+        self.total_value = total_val
         return total_val, total_weights
 
     def fitness(self):
-        if self.bag.capacity < self.weights:
+        if self.bag.capacity < self.total_weight:
+            #print(self.bag.capacity, self.total_weight)
             return 0
         else:
-            return self.values
+            return self.total_value
     
     def __str__(self):
         return self.bits
