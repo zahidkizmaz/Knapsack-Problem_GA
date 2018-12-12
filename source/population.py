@@ -1,5 +1,6 @@
 from bag import Bag
 from dna import Dna
+import numpy as np
 
 class Population:
 
@@ -20,19 +21,30 @@ class Population:
     def initialize_bits(self):
         bits = len(self.params.get('item_weights')) * '0'
         for i, b in enumerate(bits):
-            if self.params.get('random_number_array')[self.random_counter] >= 0.5:
+            if self.get_next_random() >= 0.5:
                 bits_list = list(bits)
                 bits_list[i] = '1'
                 bits = "".join(bits_list)
-            self.increase_counter()
         return bits
+    
+    def get_next_random(self):
+        randm = self.params.get('random_number_array')[self.random_counter]
+        self.increase_counter()
+        return randm
+
+    def crossover(self, parent1, parent2, crossover_point):
+        child1 = parent1[:crossover_point] + parent2[crossover_point:]
+        child2 = parent2[:crossover_point] + parent1[crossover_point:]
+        return child1, child2
+
+    def get_index_by_random(self, array_len):
+        return array_len * self.get_next_random() - 1
 
     def __str__(self):
         res = ''
-        for p in self.pop:
-            res += str(p) + '\n'
+        for i, p in enumerate(self.pop):
+            res += str(i) + '- ' + str(p) + '\n'
             #print(p)
         return res
+
     
-
-
