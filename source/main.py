@@ -10,9 +10,10 @@ if __name__ == "__main__":
 
     pop = Population(params)
     pop.initialize_population()
-    print(pop)
+    #print(pop)
 
     for i in range(iter_number):
+        print('Generation', i, '\n', pop)
         parent1, parent2 = pop.select_parents(params.get('tournament_size'))
         crossover_point = pop.get_index_by_random(len(parent1.bits))
         child1, child2 = pop.crossover(parent1,parent2,crossover_point)
@@ -20,11 +21,7 @@ if __name__ == "__main__":
         pop.mutate_individual(child2)
         child1.eval_vals()
         child2.eval_vals()
-        '''
-        print('CK: '+ str(crossover_point) )
-        print(parent1, parent2)
-        print(child1, child2)
-        '''
+        
         mating_pool = pop.pop.copy()
         mating_pool.append(child1)
         mating_pool.append(child2)

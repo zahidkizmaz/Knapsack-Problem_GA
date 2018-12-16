@@ -19,12 +19,15 @@ class Dna:
 
     def fitness(self):
         if self.bag.capacity < self.total_weight:
-            #print(self.bag.capacity, self.total_weight)
+            #print(str(self),self.bag.capacity, self.total_weight)
             return 0
         else:
             return self.total_value
 
     def __str__(self):
-        return self.bits
+        return str((self.bits, self.fitness()))
+
+    def __repr__(self):
+        return str(self)
         
     

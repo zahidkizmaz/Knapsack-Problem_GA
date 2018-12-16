@@ -15,7 +15,7 @@ class Population:
             self.random_counter = 0
 
     def initialize_population(self):
-        for i in range(self.params.get('pop_size')):
+        for _ in range(self.params.get('pop_size')):
             tmp_dna = Dna(self.initialize_bits(), self.params.get('item_weights'), self.params.get('item_values'), Bag(self.params.get('bag_size')))
             tmp_dna.eval_vals()
             self.pop.append(tmp_dna)
@@ -46,12 +46,14 @@ class Population:
         mutation_rate = self.params.get('mutation_rate')
         for i, b in enumerate(individual.bits):
             if self.get_next_random() <= mutation_rate:
+                print('Applying Mutation:')
                 bits_list = list(individual.bits)
                 if bits_list[i] =='0':
                     bits_list[i] = '1'
                 else:
                     bits_list[i] = '0'
                 new_bits = "".join(bits_list)
+                print(new_bits)
         individual.bits = new_bits
 
     def get_next_random(self):
@@ -60,14 +62,17 @@ class Population:
         return randm
 
     def crossover(self, parent1, parent2, crossover_point):
+        print('Applying Crossover:\t at', crossover_point)
+        print('Parents: ',parent1, parent2)
         child1_bits = parent1.bits[:crossover_point] + parent2.bits[crossover_point:]
         child2_bits = parent2.bits[:crossover_point] + parent1.bits[crossover_point:]
         child1 = Dna(child1_bits, self.params.get('item_weights'), self.params.get('item_values'), Bag(self.params.get('bag_size')))
         child2 = Dna(child2_bits, self.params.get('item_weights'), self.params.get('item_values'), Bag(self.params.get('bag_size')))
+        print('Children: ',child1_bits, child2_bits)
         return child1, child2
 
     def get_index_by_random(self, array_len):
-        return ceil(array_len * self.get_next_random()) - 1
+        return (ceil(array_len * self.get_next_random()) - 1)
 
     def create_pool(self, tournament_size):
         pool = []
@@ -85,10 +90,9 @@ class Population:
         return sorted_pool[:self.params.get('pop_size')]
 
     def __str__(self):
-        res = ''
-        for i, p in enumerate(self.pop):
-            res += str(i+1) + '- ' + str(p) +  '\tFitness:' + str(p.fitness()) + '\n'
-            #print(p)
-        return res
+        return str(self.pop)
+        
+    def __repr__(self):
+        return str(self)
 
     
