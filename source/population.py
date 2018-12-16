@@ -28,32 +28,28 @@ class Population:
                 bits_list[i] = '1'
                 bits = "".join(bits_list)
         return bits
-    '''
-    def mutate_pop(self, mutation_rate = None):
+    
+    def mutate_children(self, children, mutation_rate = None):
         mutation_rate = mutation_rate if mutation_rate is not None else self.params.get('mutation_rate')
-        for p in self.pop:
-            for i, b in enumerate(p.bits):
-                if self.get_next_random() <= mutation_rate:
-                    bits_list = list(p.bits)
-                    if bits_list[i] =='0':
-                        bits_list[i] = '1'
-                    else:
-                        bits_list[i] = '0'
-                    self.pop[i].bits = "".join(bits_list)
-    '''
+        print('Applying mutation to:', children)
+        for child in children:
+            self.mutate_individual(child)
+            child.eval_vals()
+        print('Mutated offspring:', children)
+    
     
     def mutate_individual(self, individual):
         mutation_rate = self.params.get('mutation_rate')
         for i, b in enumerate(individual.bits):
             if self.get_next_random() <= mutation_rate:
-                print('Applying Mutation:')
+                #print('Applying Mutation:')
                 bits_list = list(individual.bits)
                 if bits_list[i] =='0':
                     bits_list[i] = '1'
                 else:
                     bits_list[i] = '0'
                 new_bits = "".join(bits_list)
-                print(new_bits)
+                #print(new_bits)
         individual.bits = new_bits
 
     def get_next_random(self):
@@ -63,13 +59,26 @@ class Population:
 
     def crossover(self, parent1, parent2, crossover_point):
         print('Applying Crossover:\t at', crossover_point)
-        print('Parents: ',parent1, parent2)
+        print('Parents: ',(parent1, parent2))
         child1_bits = parent1.bits[:crossover_point] + parent2.bits[crossover_point:]
         child2_bits = parent2.bits[:crossover_point] + parent1.bits[crossover_point:]
         child1 = Dna(child1_bits, self.params.get('item_weights'), self.params.get('item_values'), Bag(self.params.get('bag_size')))
         child2 = Dna(child2_bits, self.params.get('item_weights'), self.params.get('item_values'), Bag(self.params.get('bag_size')))
-        print('Children: ',child1_bits, child2_bits)
-        return child1, child2
+        print('Children: ',(child1_bits, child2_bits))
+        return (child1, child2)
+
+    def recombine(self, parents):
+        dna_len = len(parents[0][0].bits)
+        children = []
+        for p1, p2 in parents:
+            crossover_point = self.get_index_by_random(dna_len)
+            child1, child2 = self.crossover(p1, p2, crossover_point)
+            child1.eval_vals()
+            child2.eval_vals()
+            children.append(child1)
+            children.append(child2)
+        return children
+        
 
     def get_index_by_random(self, array_len):
         return (ceil(array_len * self.get_next_random()) - 1)
@@ -83,7 +92,7 @@ class Population:
     def select_parents(self, tournament_size):
         pool = self.create_pool(tournament_size)
         pool.sort(key = lambda x: x.fitness(), reverse=True)
-        return pool[0], pool[1]
+        return (pool[0], pool[1])
 
     def survivor_select(self, mating_pool):
         sorted_pool = sorted(mating_pool,key = lambda x: x.fitness(), reverse=True)

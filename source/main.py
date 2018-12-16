@@ -15,6 +15,7 @@ if __name__ == "__main__":
     for i in range(iter_number):
         print('Generation', i, '\n', pop)
         summary.append(pop.pop_summary())
+        '''
         parent1, parent2 = pop.select_parents(params.get('tournament_size'))
         crossover_point = pop.get_index_by_random(len(parent1.bits))
         child1, child2 = pop.crossover(parent1,parent2,crossover_point)
@@ -22,11 +23,19 @@ if __name__ == "__main__":
         pop.mutate_individual(child2)
         child1.eval_vals()
         child2.eval_vals()
+        '''
+        parents = []
+        for _ in range(int(params.get('pop_size') / 2)):
+            pars = pop.select_parents(params.get('tournament_size'))
+            parents.append(pars)
         
+        children = pop.recombine(parents)
+        pop.mutate_children(children)
         mating_pool = pop.pop.copy()
-        mating_pool.append(child1)
-        mating_pool.append(child2)
+        mating_pool += children
 
+        #mating_pool.append(child1)
+        #mating_pool.append(child2)
         pop.pop = pop.survivor_select(mating_pool)
     
     print('Final Population:', pop)
@@ -43,6 +52,9 @@ if __name__ == "__main__":
     plt.legend(loc='lower right')
     plt.xlabel('Iteration')
     plt.ylabel('Fitness')
+    title = 'Fitness values for ' 
+    title += str(file_name)
+    plt.title(title)
     fig = plt.gcf()
     fig.canvas.set_window_title(file_name)
     plt.show()
