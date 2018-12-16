@@ -19,7 +19,7 @@ I recommend using a virtualenv:
 
 ```
   $ python3 -m venv venv
-  $ source pytext_venv/bin/activate
+  $ source venv/bin/activate
   (venv) $ pip install -r requirements.txt
   (venv) $ cd source/
   (venv) $ python main.py ../tests/test1.txt > out1.txt
