@@ -89,6 +89,14 @@ class Population:
         sorted_pool = sorted(mating_pool,key = lambda x: x.fitness(), reverse=True)
         return sorted_pool[:self.params.get('pop_size')]
 
+    def pop_summary(self):
+        best_individual = max(self.pop, key=lambda x: x.fitness())
+        worst_individual = min(self.pop, key=lambda x: x.fitness())
+        avg_fitness = sum(i.fitness() for i in self.pop) / float(len(self.pop))
+
+        return (best_individual.fitness(), avg_fitness, worst_individual.fitness())
+
+
     def __str__(self):
         return str(self.pop)
         

@@ -37,12 +37,12 @@ def get_inputs(inpts):
     for line in f:
         lines.append(line.rstrip('\n'))
     
-    return lines
+    return lines, file_name
 
 def get_params():
-    inpt_array = get_inputs(sys.argv)
+    inpt_array, file_name = get_inputs(sys.argv)
     paramaters = handle_inputs(inpt_array)
-    return paramaters
+    return paramaters, file_name
 
 if __name__ == "__main__": 
     inpt_array = get_inputs(sys.argv)
