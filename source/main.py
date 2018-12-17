@@ -5,10 +5,14 @@ from input_handler import get_params
 from population import Population
 
 if __name__ == "__main__":
+    """Getting parameters from the given text file. 
+    """
     params, file_name = get_params()
     iter_number = params.get('iter_number')
     print(params)
 
+    """Genetic algorithm:
+    """
     pop = Population(params)
     pop.initialize_population()
     summary = []
@@ -29,6 +33,8 @@ if __name__ == "__main__":
     
     print('Final Population:', pop)
 
+    """Creating the summaries for graph.
+    """
     best_vals = [s[0] for s in summary]
     avg_vals = [s[1] for s in summary]
     worst_vals = [s[2] for s in summary]
