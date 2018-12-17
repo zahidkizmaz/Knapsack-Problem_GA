@@ -1,5 +1,7 @@
 # Knapsack Problem Solved With Genetic Algorithms
-
+[![Python 3.6](https://img.shields.io/badge/python-3.7-green.svg)](https://www.python.org/downloads/release/python-360/)
+[![License: GPL v3](https://img.shields.io/badge/License-GPLv3-green.svg)](https://www.gnu.org/licenses/gpl-3.0)
+[![matplotlib](https://img.shields.io/badge/matplotlib-2.2.3-green.svg)](https://matplotlib.org/2.2.3/index.html)
 ### Pseudo code for the genetic algorithms:
 
 * BEGIN

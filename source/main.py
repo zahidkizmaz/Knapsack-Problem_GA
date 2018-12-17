@@ -15,15 +15,6 @@ if __name__ == "__main__":
     for i in range(iter_number):
         print('Generation', i, '\n', pop)
         summary.append(pop.pop_summary())
-        '''
-        parent1, parent2 = pop.select_parents(params.get('tournament_size'))
-        crossover_point = pop.get_index_by_random(len(parent1.bits))
-        child1, child2 = pop.crossover(parent1,parent2,crossover_point)
-        pop.mutate_individual(child1)
-        pop.mutate_individual(child2)
-        child1.eval_vals()
-        child2.eval_vals()
-        '''
         parents = []
         for _ in range(int(params.get('pop_size') / 2)):
             pars = pop.select_parents(params.get('tournament_size'))
@@ -34,8 +25,6 @@ if __name__ == "__main__":
         mating_pool = pop.pop.copy()
         mating_pool += children
 
-        #mating_pool.append(child1)
-        #mating_pool.append(child2)
         pop.pop = pop.survivor_select(mating_pool)
     
     print('Final Population:', pop)
