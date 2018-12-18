@@ -48,7 +48,7 @@ After this you should be able to see a graph and a out1.txt contains informaton 
 
 #### Setting Hyper Parameters 
 
-You need to provide hyper parameters in the txt file as argument to main.py. Input file must be txt file and here is the format:
+You can provide hyper parameters in a txt file as an argument to main.py. Input file must be txt file formatted like this:
 
 - Random number list between [0,1] and seperated with comma
 - Population Size
