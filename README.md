@@ -46,6 +46,32 @@ I recommend using a virtualenv:
 ```
 After this you should be able to see a graph and a out1.txt contains informaton about the genetic algortihm results.
 
+#### Setting Hyper Parameters 
+
+You need to provide hyper parameters in the txt file as argument to main.py. Input file must be txt file and here is the format:
+
+- Random number list between [0,1] and seperated with comma
+- Population Size
+- Tournament Size for tournament selection (k) 
+- Mutation rate between [0,1]
+- Total iteration number
+- Bag size
+- Weights of items seperated with comma
+- Values of items seperated with comma
+
+Here is an example txt file:
+
+```
+0.06,0.32,0.87,0.02,0.15,0.47,0.36,0.53,0.32,0.39,0.39,0.26,0.27,0.21,0.73,0.42,0.69,0.32,0.3
+30
+5
+0.07
+82
+47
+14,13,11,13,10,11,13,14,11,13,15,11,11,11,5,15,15,6,12,12,7,8,6
+18,22,21,23,18,22,19,22,25,17,23,21,11,13,20,11,13,14,15,17,25,14,17
+```
+
 ### Example Graph
 
 This graph indicates a summary of the population at the given iteration. Best is the highest fitness value in the population and worst is the lowest fitness value in the population. Also average indicates for average fitness value for all population at the corresponding iteration.
