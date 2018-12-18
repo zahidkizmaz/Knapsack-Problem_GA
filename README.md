@@ -42,7 +42,6 @@ I recommend using a virtualenv:
   (venv) $ pip install -r requirements.txt
   (venv) $ cd source/
   (venv) $ python main.py ../tests/test1.txt > out1.txt
-
 ```
 After this you should be able to see a graph and a out1.txt contains informaton about the genetic algortihm results.
 

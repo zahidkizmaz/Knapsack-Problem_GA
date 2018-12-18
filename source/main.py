@@ -9,7 +9,7 @@ if __name__ == "__main__":
     """
     params, file_name = get_params()
     iter_number = params.get('iter_number')
-    print(params)
+    #print(params)
 
     """Genetic algorithm:
     """
@@ -44,6 +44,8 @@ if __name__ == "__main__":
     avg_vals = [s[1] for s in summary]
     worst_vals = [s[2] for s in summary]
 
+    """Plotting the graph
+    """
     range_ = range(0, iter_number)
     plt.plot(range_, best_vals, 'go--', label='Best')
     plt.plot(range_, avg_vals, 'rs--', label='Average')
