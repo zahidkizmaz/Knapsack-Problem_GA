@@ -90,6 +90,7 @@ class Population:
         parent2 -- Dna object that represents second parent of crossover. 
         crossover_point -- Integer index of the crossover point.  
         """
+        crossover_point += 1 
         print('Applying Crossover:\t at', crossover_point)
         print('Parents: ',(parent1, parent2))
         child1_bits = parent1.bits[:crossover_point] + parent2.bits[crossover_point:]
@@ -99,23 +100,41 @@ class Population:
         print('Children: ',(child1_bits, child2_bits))
         return (child1, child2)
 
-    def recombine(self, parents):
+    def recombine(self, parents, single = False):
         """Applies crossover to each parent duo from the list. 
         Returns the childen list.
         
         Keyword arguments:
         parents -- List of Dna objects that represents parents.
+        single -- Represents if parent list contains single parents or zipped two parents tuples.
         """
-        dna_len = len(parents[0][0].bits)
-        children = []
-        for p1, p2 in parents:
-            crossover_point = self.get_index_by_random(dna_len)
-            child1, child2 = self.crossover(p1, p2, crossover_point)
-            child1.eval_vals()
-            child2.eval_vals()
-            children.append(child1)
-            children.append(child2)
-        return children
+        if single:
+            dna_len = len(parents[0].bits)
+            children = []
+            for i in range(0, len(parents), 2):
+                p1 = parents[i]
+                if (i+1) >= len(parents):
+                    p2 = parents[0]
+                else:
+                    p2 = parents[i+1]
+                crossover_point = self.get_index_by_random(dna_len)
+                child1, child2 = self.crossover(p1, p2, crossover_point)
+                child1.eval_vals()
+                child2.eval_vals()
+                children.append(child1)
+                children.append(child2)
+            return children
+        else:
+            dna_len = len(parents[0][0].bits)
+            children = []
+            for p1, p2 in parents:
+                crossover_point = self.get_index_by_random(dna_len)
+                child1, child2 = self.crossover(p1, p2, crossover_point)
+                child1.eval_vals()
+                child2.eval_vals()
+                children.append(child1)
+                children.append(child2)
+            return children
         
 
     def get_index_by_random(self, array_len):
@@ -146,6 +165,16 @@ class Population:
         pool = self.create_pool(tournament_size)
         pool.sort(key = lambda x: x.fitness(), reverse=True)
         return (pool[0], pool[1])
+
+    def select_parent(self, tournament_size):
+        """Selects and returns a parent from pool.
+
+        Keyword arguments:
+        tournament_size -- Integer size of the pool.
+        """
+        pool = self.create_pool(tournament_size)
+        pool.sort(key = lambda x: x.fitness(), reverse=True)
+        return pool[0]
 
     def survivor_select(self, mating_pool):
         """Eliminates the worse Dna objects by their fitness value.

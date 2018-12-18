@@ -20,11 +20,16 @@ if __name__ == "__main__":
         print('Generation', i, '\n', pop)
         summary.append(pop.pop_summary())
         parents = []
+        """
         for _ in range(int(params.get('pop_size') / 2)):
             pars = pop.select_parents(params.get('tournament_size'))
             parents.append(pars)
-        
-        children = pop.recombine(parents)
+        """
+        for _ in range(int(params.get('pop_size'))):
+            par = pop.select_parent(params.get('tournament_size'))
+            parents.append(par)
+
+        children = pop.recombine(parents, single=True)
         pop.mutate_children(children)
         mating_pool = pop.pop.copy()
         mating_pool += children
